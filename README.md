@@ -1,2 +1,4 @@
-# Movie4U
-영화 리뷰 기반 추천 시스템
+## Python Project
+
+### 1. Rock Scissors Paper Lizard Spock Game
+- pygame
