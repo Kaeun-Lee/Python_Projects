@@ -7,20 +7,28 @@ print("==========================================================\n")
 
 choice = ['가위', '바위', '보']
 
-
 def get_num_player():
     while True:
-        num_player = int(input("플레이어 수를 입력해 주세요. ex) 1, 2 : "))
-        if num_player in [1,2]: 
+        try:
+            num_player = int(input("플레이어 수를 입력하세요. ex) 1, 2: "))
+        except ValueError as e:
+            num_player = 0
+            print("숫자를 입력하세요! ", e)
+        if num_player in [1, 2]:
+            print(f"플레이어 수 : {num_player} 명")
             return num_player
         else:
-            print("1과 2 중 하나를 선택해 주세요.")
+            print("1과 2 중에서 하나를 선택하세요.")         
 
 
 def get_num_round():
     while True:
-        rounds = int(input("게임을 몇 번 진행할지 선택해 주세요. ex) 1, 3, 10... : "))
-        if rounds > 1:
+        try:
+            rounds = int(input("게임을 몇 번 진행할지 선택하세요. ex) 1, 3, 10... : "))
+        except ValueError as e:
+            rounds = 0
+            print("숫자를 입력하세요! ", e)
+        if rounds >= 1:
             return rounds
         else:
             print("0보다 큰 수를 입력하세요.")
@@ -42,8 +50,6 @@ def get_double_player_input():
 
 def get_winner(player1, player2):
     """첫 번째가 이겼는지, 두 번째가 이겼는지, 비겼는지를 output"""
-    score_player1 = score_player2 = 0
-
     if player1 == player2:
         winner = None
         return winner
@@ -51,31 +57,24 @@ def get_winner(player1, player2):
         if player1 == '가위':
             if player2 == '바위':
                 winner = 'player2'
-                score_player2 += 1
             else:
                 winner = 'player1'
-                score_player1 += 1
             return winner
 
         elif player1 == '바위':
             if player2 == '보':
                 winner = 'player2'
-                score_player2 += 1
             else:
                 winner = 'player1'
-                score_player1 += 1
             return winner
 
         else:
             if player2 == '가위':
                 winner = 'player2'
-                score_player2 += 1
             else:
                 winner = 'player1'
-                score_player1 += 1
             return winner
 
-    print(f"플레이어 : {score_player1} 점, 컴퓨터 : {score_player2} 점")
 
 def print_winner(winner, is_pc):
     """
@@ -96,17 +95,32 @@ def print_winner(winner, is_pc):
             else:
                 print("두 번째 플레이어가 이겼습니다!")
 
+def main():
+    num_player = get_num_player()
+    is_pc = (num_player == 1)
+    rounds = get_num_round()
+    score_player1 = score_player2 = 0  # scoreboard
 
-num_player = get_num_player()
-is_pc = (num_player == 1)
-rounds = get_num_round()
+    for i in range(rounds):
+        if is_pc:
+            player1, player2 = get_single_player_input()
+        else:
+            player1, player2 = get_double_player_input()
+
+        winner = get_winner(player1, player2)
+        print_winner(winner, is_pc)
+
+        if winner == 'player1':
+            score_player1 += 1
+        elif winner == 'player2':
+            score_player2 += 1
+        else:
+            continue  # 비김
+
+    print(f"플레이어 : {score_player1} 점, 컴퓨터 : {score_player2} 점")
 
 
-for i in range(rounds):
-    if is_pc:
-        player1, player2 = get_single_player_input()
-    else:
-        player1, player2 = get_double_player_input()
+if __name__ == "__main__":
+    main()
 
-    winner = get_winner(player1, player2)
-    print_winner(winner, is_pc)
+    
