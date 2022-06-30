@@ -1,11 +1,15 @@
 import random
 
-print("==========================================================")
-print("=================== 가위 바위 보 게임 ====================")
-print("==========================================================\n")
+print("===================================================================")
+print("=================== 가위 바위 보 도마뱀 스팍게임 ==================")
+print("===================================================================\n")
 
 
-choice = ['가위', '바위', '보']
+choice = ['가위', '바위', '보', '도마뱀', '스팍']
+RULES = [("가위", "보"), ("보", "바위"), ("바위", "가위"), ("가위", "도마뱀"), 
+        ("바위", "도마뱀"), ("보", "스팍"), ("도마뱀", "보"), ("도마뱀", "스팍"),
+        ("스팍", "가위"), ("스팍", "바위")]
+
 
 def get_num_player():
     while True:
@@ -35,45 +39,27 @@ def get_num_round():
 
 
 def get_single_player_input():
-    player1 = input('가위, 바위, 보 중 하나를 내세요. : ')
+    player1 = input('가위, 바위, 보, 도마뱀, 스팍 중 하나를 내세요. : ')
     player2 = choice[random.randint(0,2)]
     print(f"플레이어는 '{player1}'를, 컴퓨터는 '{player2}'를 냈습니다.")
     return player1, player2
 
 
 def get_double_player_input():
-    player1 = input('**첫 번째 플레이어** 가위, 바위, 보 중 하나를 내세요. : ')
-    player2 = input('**두 번째 플레이어** 가위, 바위, 보 중 하나를 내세요. : ')
+    player1 = input('**첫 번째 플레이어** 가위, 바위, 보, 도마뱀, 스팍 중 하나를 내세요. : ')
+    player2 = input('**두 번째 플레이어** 가위, 바위, 보, 도마뱀, 스팍 중 하나를 내세요. : ')
     print(f"첫 번째 플레이어는 '{player1}'를, 두 번째 플레이어는 '{player2}'를 냈습니다.")
     return player1, player2
 
 
 def get_winner(player1, player2):
     """첫 번째가 이겼는지, 두 번째가 이겼는지, 비겼는지를 output"""
-    if player1 == player2:
-        winner = None
-        return winner
+    if (player1, player2) in RULES:
+        return 'player1'
+    elif (player2, player1) in RULES:
+        return 'player2'
     else:
-        if player1 == '가위':
-            if player2 == '바위':
-                winner = 'player2'
-            else:
-                winner = 'player1'
-            return winner
-
-        elif player1 == '바위':
-            if player2 == '보':
-                winner = 'player2'
-            else:
-                winner = 'player1'
-            return winner
-
-        else:
-            if player2 == '가위':
-                winner = 'player2'
-            else:
-                winner = 'player1'
-            return winner
+        return None
 
 
 def print_winner(winner, is_pc):
@@ -94,6 +80,7 @@ def print_winner(winner, is_pc):
                 print("첫 번째 플레이어가 이겼습니다!")
             else:
                 print("두 번째 플레이어가 이겼습니다!")
+
 
 def main():
     num_player = get_num_player()
@@ -122,5 +109,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    
